@@ -39,6 +39,7 @@ jobs:
         echo "GITHUB_SHA:$GITHUB_SHA"
         echo "GITHUB_REF:$GITHUB_REF"
         echo "GITHUB_HEAD_REF:$GITHUB_HEAD_REF"
+        echo "GITHUB_TAG:${GITHUB_HEAD_REF##*/}"
     
     - name: Print complete webhook event payload
       run: cat $GITHUB_EVENT_PATH
