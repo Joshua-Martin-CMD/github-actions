@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  
+  Build_Number: Latest
   AWS_REGION : ap-southeast-2 #Change to reflect your Region
 
 # Permission can be added at job level or workflow level    
@@ -39,8 +39,8 @@ jobs:
             secret: ${{ secrets.GITHUB_TOKEN }}
             approvers: Joshua-Martin-CMD
             minimum-approvals: 1
-            issue-title: "Deploying v1.3.5 to prod from staging"
-            issue-body: "Please approve or deny the deployment of version v1.3.5."
+            issue-title: "Deploying ${{env.Build_Number}} to UAT ENV"
+            issue-body: "Please approve or deny the deployment of version ${{env.Build_Number}}"
             exclude-workflow-initiator-as-approver: false
             additional-approved-words: ''
             additional-denied-words: ''
