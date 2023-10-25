@@ -7,23 +7,43 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 env:
-  
+  Build_Number: Latest
   AWS_REGION : ap-southeast-2 #Change to reflect your Region
 
 # Permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
+
 jobs:
 
   build:
 
+
     name: Build Image
     runs-on: ubuntu-latest
 
+    permissions:
+      issues: write
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
+
     steps:
+
+    - name: approval
+      uses: trstringer/manual-approval@v1
+      with:
+            secret: ${{ secrets.GITHUB_TOKEN }}
+            approvers: Joshua-Martin-CMD
+            minimum-approvals: 1
+            issue-title: "Building Docker Image WBD with Tag: ${{env.Build_Number}} to ECR"
+            issue-body: "Please approve or deny the deployment of version ${{env.Build_Number}}"
+            exclude-workflow-initiator-as-approver: false
+            additional-approved-words: ''
+            additional-denied-words: ''
 
     - name: Check out code
       uses: actions/checkout@v2
@@ -43,4 +63,3 @@ jobs:
     
     - name: Print complete webhook event payload
       run: cat $GITHUB_EVENT_PATH
-    
